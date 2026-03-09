@@ -1,8 +1,7 @@
 #!/bin/bash
-POOL_BASE="SysSecTeam"
 NAME="LinuxCTF"
 
-VMIDS=$(qm list | grep "LinuxCTF" | awk '{print $1}')
+VMIDS=$(qm list | grep "$NAME" | awk '{print $1}')
 
 for VMID in $VMIDS; do
     echo "Stopping and destroying VM $VMID..."
