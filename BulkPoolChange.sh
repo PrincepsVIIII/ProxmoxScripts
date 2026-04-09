@@ -22,7 +22,7 @@ fi
 # VM lookup - Exact matches
 # -------------------------
 VMIDS=$(qm list | awk -v name="$VMName" '$2 == name {print $1}')
-echo "Found VMIDs: $VMIDS"
+echo "Found VMIDs:\n$VMIDS"
 
 if [[ -z "$VMIDS" ]]; then
   echo "No VMs found matching $VMName"
