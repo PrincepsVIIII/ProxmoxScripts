@@ -34,12 +34,13 @@ echo "Building VM → Pool map..."
 declare -A VM_TO_POOL
 
 while read -r pool; do
-  pvesh get "/pools/$pool" --output-format json \
-  | jq -r --arg pool "$pool" '.members[]?.vmid | "\(. ) \($pool)"'
-done < <(pvesh get /pools --output-format json | jq -r '.[].poolid') \
-| while read -r vmid pool; do
-    VM_TO_POOL[$vmid]=$pool
-done
+  while read -r vmid; do
+    VM_TO_POOL[$vmid]="$pool"
+  done < <(
+    pvesh get "/pools/$pool" --output-format json \
+    | jq -r '.members[]?.vmid'
+  )
+done < <(pvesh get /pools --output-format json | jq -r '.[].poolid')
 
 # -------------------------
 # Processing
