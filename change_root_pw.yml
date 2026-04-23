@@ -1,0 +1,20 @@
+---
+- name: Change root password on all target hosts
+  hosts: targets
+  become: yes
+  become_method: sudo
+  gather_facts: no
+
+  vars:
+    new_root_password: "secretpassxd1"
+
+  tasks:
+    - name: Wait for host to be reachable
+      wait_for_connection:
+        timeout: 10
+
+    - name: Change root password
+      user:
+        name: root
+        password: "{{ new_root_password | password_hash('sha512') }}"
+        update_password: always
